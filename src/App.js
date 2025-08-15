@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import OnePage from './pages/OnePage';
+import TodoPage from './pages/TodoPage';
+import SchedulePage from './pages/SchedulePage';
+import MyPage from './pages/MyPage';
 
-function App() {
+const variants = {
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.22 } },
+  exit:    { opacity: 0, y: -8, transition: { duration: 0.18 } },
+};
+
+function AnimatedRoutes() {
+  const location = useLocation();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        variants={variants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        style={{ minHeight: '100vh' }}
+      >
+        <Routes location={location}>
+          <Route path="/" element={<OnePage />} />
+          <Route path="/todos" element={<TodoPage />} />
+          <Route path="/schedule" element={<SchedulePage />} />
+          <Route path="/mypage" element={<MyPage />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AnimatedRoutes />
+    </BrowserRouter>
+  );
+}

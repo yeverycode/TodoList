@@ -1,0 +1,39 @@
+:root{
+  --bg:#FFFFFF; --ink:#323530; --muted:#666; --line:#E5E7EB;
+  --indigo:#6680E9; --gray:#525966; --pale:#EBF5FD;
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Noto Sans KR,Apple SD Gothic Neo,sans-serif;}
+*{box-sizing:border-box}
+a{color:inherit; text-decoration:none}
+
+.container{max-width:1120px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 16px;border-radius:999px;border:1px solid var(--line);cursor:pointer}
+.btn.solid{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.btn.outline{background:#fff;color:#000}
+.badge{display:inline-block;padding:4px 10px;border:1px solid var(--line);
+  border-radius:999px;color:var(--muted);font-size:12px}
+.muted{color:var(--muted)}
+
+/* Header / Footer (공통) */
+.one-header{position:fixed;top:0;left:0;width:100%;z-index:1000;background:#fff;
+  border-bottom:1px solid var(--line); transition:all .2s ease}
+.one-header.shrink{box-shadow:0 4px 16px rgba(0,0,0,.04)}
+.one-header__inner{height:72px;display:flex;align-items:center;gap:40px;justify-content:space-between;padding:0 50px}
+.logo{font-weight:700;font-size:20px;color:var(--gray);background:none;border:0;cursor:pointer}
+.nav{display:flex;gap:24px}
+.nav a, .nav button{background:none;border:0;padding:8px 12px;border-radius:8px;color:var(--gray);cursor:pointer}
+.nav a.active, .nav button.active{color:#000;border-bottom:2px solid var(--indigo)}
+.auth{display:flex;gap:10px}
+
+.one-footer{background:#FBFFFF;border-top:1px solid var(--line);margin-top:60px}
+.one-footer__inner{max-width:1120px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px}
+.one-footer .brand{font-weight:800;font-size:20px;margin-bottom:4px}
+.one-footer .title{font-weight:700;margin-bottom:8px}
+.one-footer a{display:block;margin:4px 0}
+
+@media (max-width:720px){
+  .one-header__inner{padding:0 16px}
+  .auth{display:none}
+}
