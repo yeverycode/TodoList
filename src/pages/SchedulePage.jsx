@@ -3,11 +3,9 @@ import { useEffect, useMemo, useRef } from 'react';
 import OneHeader from '../components/OneHeader';
 import OneFooter from '../components/OneFooter';
 
-/** 스타일 분리를 적용했다면 이렇게:
- *  import '../styles/base.css';
- *  import '../styles/app.css';
- *  아직 분리 전이라면 기존 onepage.css 유지 가능 */
-import '../styles/onepage.css';
+import '../styles/base.css';
+import '../styles/app.css';
+import '../styles/detail.css'; // 상세 페이지 전용(타이포/패널/그리드/버튼 등)
 
 import useSchedule from '../hooks/useSchedule';
 import ScheduleToolbar from '../components/schedule/ScheduleToolbar';
@@ -17,8 +15,11 @@ import MonthCalendar from '../components/schedule/MonthCalendar';
 import { requestNotifyPermission, showNotification, startDueWatcher } from '../services/notify';
 import { formatYMD } from '../utils/date';
 
+// import logo from '../assets/momentum-logo.png';
+
 export default function SchedulePage() {
   const h1Ref = useRef(null);
+
   const {
     selectedDate, setSelectedDate,
     addEvent, removeEvent, getBaseEventsByDate, getEventsByDate,
@@ -68,40 +69,79 @@ export default function SchedulePage() {
     [selectedDate, getEventsByDate]
   );
 
+  // 접근성 있는 날짜 라벨
+  const dateObj = new Date(selectedDate);
+  const dateLabel = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일 (${['일','월','화','수','목','금','토'][dateObj.getDay()]})`;
+
+  // 빠른 액션
+  const jumpToday = () => {
+    const now = new Date();
+    setSelectedDate(formatYMD(now));
+  };
+
   return (
     <>
       <OneHeader />
-      <main className="section pale">
-        <div className="container">
+
+      <main className="detail">
+        {/* 상단 강조 헤더 */}
+        <header className="detail-head">
+          {/* <div className="logo" aria-hidden="true">
+            <img src={logo} alt="" />
+          </div> */}
           <h1 tabIndex={-1} ref={h1Ref}>일정</h1>
-          <p className="muted">월간 달력 · 드래그 정렬 · 반복 일정 · 알림 지원</p>
+          <span className="eyebrow">SCHEDULE</span>
+        </header>
 
-          {/* 월간 달력 */}
-          <MonthCalendar
-            valueYMD={selectedDate}
-            onChange={setSelectedDate}
-            countsByDate={countsByDate}
-          />
-
-          {/* 툴바 / 입력 / 리스트 */}
-          <ScheduleToolbar
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            exportData={exportEvents}
-            importData={importEvents}
-          />
-
-          <EventInput selectedDate={selectedDate} onAdd={addEvent} />
-
-          <EventList
-            items={todaysEvents}
-            selectedDate={selectedDate}
-            onRemove={removeEvent}
-            onReorder={reorderEvent}
-            dragSourceRef={dragSourceRef}
-          />
+        {/* 안내 문구 제거, 빠른 액션만 유지 */}
+        <div className="quick-actions" role="group" aria-label="빠른 액션">
+          <button className="btn outline btn--sm" onClick={jumpToday} aria-label="오늘로 이동">
+            오늘로 이동
+          </button>
+          <span className="muted qa-hint">달력에서 날짜를 클릭해 당일 일정을 관리하세요.</span>
         </div>
+
+        {/* 2열: 왼쪽 달력 / 오른쪽 당일 일정 */}
+        <section className="grid-2" style={{ marginTop: 8 }}>
+          {/* 왼쪽: 월간 달력 패널 */}
+          <aside className="panel" aria-label="월간 달력">
+            <h2 className="hl">달력</h2>
+            <MonthCalendar
+              valueYMD={selectedDate}
+              onChange={setSelectedDate}
+              countsByDate={countsByDate}
+            />
+          </aside>
+
+          {/* 오른쪽: 당일 타임라인 패널 */}
+          <section className="panel" aria-label="선택한 날짜의 일정">
+            <div className="panel-head" style={{ marginBottom: 10 }}>
+              <h2 className="hl" style={{ marginBottom: 6 }}>{dateLabel}</h2>
+            </div>
+
+            {/* 툴바 */}
+            <ScheduleToolbar
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              exportData={exportEvents}
+              importData={importEvents}
+            />
+
+            {/* 입력 */}
+            <EventInput selectedDate={selectedDate} onAdd={addEvent} />
+
+            {/* 리스트 */}
+            <EventList
+              items={todaysEvents}
+              selectedDate={selectedDate}
+              onRemove={removeEvent}
+              onReorder={reorderEvent}
+              dragSourceRef={dragSourceRef}
+            />
+          </section>
+        </section>
       </main>
+
       <OneFooter />
     </>
   );

@@ -1,3 +1,4 @@
+// src/components/mypage/ProfileCard.jsx
 import { useEffect, useState } from 'react';
 
 const PROFILE_KEY = 'planit.profile.v1';
@@ -38,11 +39,11 @@ export default function ProfileCard() {
       <form className="form" onSubmit={save}>
         <label>
           <span>이름</span>
-          <input name="name" value={profile.name} onChange={onChange} placeholder="홍길동" />
+          <input type="text" name="name" value={profile.name} onChange={onChange} placeholder="홍길동" />
         </label>
         <label>
           <span>이메일</span>
-          <input name="email" value={profile.email} onChange={onChange} placeholder="you@example.com" />
+          <input type="email" name="email" value={profile.email} onChange={onChange} placeholder="you@example.com" />
         </label>
         <div className="row-end">
           <button className="btn solid" type="submit">저장</button>

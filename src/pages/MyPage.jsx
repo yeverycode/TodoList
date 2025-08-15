@@ -1,8 +1,11 @@
+// src/pages/MyPage.jsx
 import { useEffect, useMemo, useRef } from 'react';
 import OneHeader from '../components/OneHeader';
 import OneFooter from '../components/OneFooter';
+
 import '../styles/base.css';
 import '../styles/app.css';
+import '../styles/detail.css'; // 상세 페이지 전용 스타일(타이포/패널/그리드/버튼 등)
 
 import useTodos from '../hooks/useTodos';
 import useSchedule from '../hooks/useSchedule';
@@ -10,6 +13,8 @@ import useSchedule from '../hooks/useSchedule';
 import ProfileCard from '../components/mypage/ProfileCard';
 import StatsBlock from '../components/mypage/StatsBlock';
 import BackupPanel from '../components/mypage/BackupPanel';
+
+// import logo from '../assets/momentum-logo.png';
 
 export default function MyPage() {
   const h1Ref = useRef(null);
@@ -23,7 +28,7 @@ export default function MyPage() {
     const open = total - done;
     const rate = total ? Math.round((done / total) * 100) : 0;
 
-    // 최근 7일 완료 개수 (doneAt: YYYY-MM-DD 또는 Date 가능)
+    // 최근 7일 완료 개수
     const days = Array.from({ length: 7 }).map((_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - (6 - i));
@@ -51,28 +56,36 @@ export default function MyPage() {
   return (
     <>
       <OneHeader compact />
-      <main className="section">
-        <div className="container">
+
+      <main className="detail">
+        {/* 상단 강조 헤더 */}
+        <header className="detail-head">
+          {/* <div className="logo" aria-hidden="true">
+            <img src={logo} alt="" />
+          </div> */}
           <h1 tabIndex={-1} ref={h1Ref}>마이페이지</h1>
-          <p className="muted">프로필 관리 · 완료율 통계 · 데이터 백업/복원</p>
+          <span className="eyebrow">MYPAGE</span>
+        </header>
 
-          <div className="mypage-grid">
-            {/* 내부 컴포넌트에서 .panel/.panel-head 구조를 사용하도록 구현 */}
-            <ProfileCard />
+        {/* 설명 문구 제거됨 */}
 
-            <StatsBlock
-              total={stats.total}
-              done={stats.done}
-              open={stats.open}
-              rate={stats.rate}
-              days={stats.days}
-              eventTotal={stats.eventTotal}
-            />
+        {/* 보드형 2열 레이아웃 */}
+        <section className="mypage-grid" aria-label="마이페이지 콘텐츠">
+          <ProfileCard />
 
-            <BackupPanel />
-          </div>
-        </div>
+          <StatsBlock
+            total={stats.total}
+            done={stats.done}
+            open={stats.open}
+            rate={stats.rate}
+            days={stats.days}
+            eventTotal={stats.eventTotal}
+          />
+
+          <BackupPanel />
+        </section>
       </main>
+
       <OneFooter />
     </>
   );

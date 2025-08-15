@@ -1,8 +1,11 @@
+// src/components/todo/TodoList.jsx
 import TodoItem from './TodoItem';
 
 export default function TodoList({ items = [], onToggle, onRemove, onEdit }) {
   const list = Array.isArray(items) ? items : [];
-  if (list.length === 0) return <div className="badge">항목이 없습니다</div>;
+  if (list.length === 0) {
+    return <div className="badge">할 일이 없어요. 상단 입력창에서 추가해보세요!</div>;
+  }
 
   return (
     <div className="todo-list">

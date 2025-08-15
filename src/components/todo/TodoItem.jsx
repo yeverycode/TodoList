@@ -1,3 +1,4 @@
+// src/components/todo/TodoItem.jsx
 import { useEffect, useRef, useState } from 'react';
 
 export default function TodoItem({ item, onToggle, onRemove, onEdit }) {
@@ -5,29 +6,23 @@ export default function TodoItem({ item, onToggle, onRemove, onEdit }) {
   const [draft, setDraft] = useState(item.title);
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    if (editing) inputRef.current?.focus();
-  }, [editing]);
+  useEffect(() => { if (editing) inputRef.current?.focus(); }, [editing]);
 
   const save = () => {
     if (draft.trim() && draft !== item.title) onEdit?.(item.id, draft);
     setEditing(false);
   };
-  const cancel = () => {
-    setDraft(item.title);
-    setEditing(false);
-  };
+  const cancel = () => { setDraft(item.title); setEditing(false); };
 
   return (
     <div className={`todo-item ${item.done ? 'done' : ''}`}>
-      <label className="chk">
+      <label className="chk" title="완료 토글">
         <input
           type="checkbox"
           checked={item.done}
           onChange={() => onToggle?.(item.id)}
           aria-label={`${item.title} 완료`}
         />
-        <span></span>
       </label>
 
       {!editing ? (
@@ -37,7 +32,7 @@ export default function TodoItem({ item, onToggle, onRemove, onEdit }) {
       ) : (
         <input
           ref={inputRef}
-          className="edit"
+          className="edit input"
           value={draft}
           onChange={(e)=>setDraft(e.target.value)}
           onBlur={save}
@@ -48,7 +43,7 @@ export default function TodoItem({ item, onToggle, onRemove, onEdit }) {
         />
       )}
 
-      <button className="icon danger" aria-label="삭제" onClick={() => onRemove?.(item.id)}>✕</button>
+      <button className="btn ghost sm" aria-label="삭제" onClick={() => onRemove?.(item.id)}>✕</button>
     </div>
   );
 }
