@@ -3,9 +3,9 @@ export default function OneFooter() {
     <footer className="one-footer">
       <div className="one-footer__inner">
         <div className="col">
-          <div className="brand">PlanIt</div>
+          <div className="brand">Momentum</div>
           <p className="muted">간단한 투두 & 일정 관리 웹사이트</p>
-          <p className="muted">© {new Date().getFullYear()} PlanIt. All rights reserved.</p>
+          <p className="muted">© {new Date().getFullYear()} Momentum. All rights reserved.</p>
         </div>
         <div className="col">
           <div className="title">바로가기</div>
@@ -16,7 +16,7 @@ export default function OneFooter() {
         <div className="col">
           <div className="title">도움말</div>
           <a href="https://github.com/yeverycode/TodoList" target="_blank" rel="noreferrer">GitHub</a>
-          <span className="muted">문의: planit@example.com</span>
+          <span className="muted">문의: ktyjj0306@sookmyung.ac.kr</span>
         </div>
       </div>
     </footer>

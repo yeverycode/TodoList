@@ -12,7 +12,7 @@ export default function OnePage() {
         <div className="hero__inner">
           <h1 className="hero__title">
             실전보다 더 실전 같은 일정 준비! <br />
-            <strong>PlanIt</strong>이 일정 관리를 도와드려요.
+            <strong>Momentum</strong>이 일정 관리를 도와드려요.
           </h1>
           <div className="hero__cta">
             <a href="#todo" className="btn solid">오늘의 할 일 확인</a>
@@ -30,7 +30,7 @@ export default function OnePage() {
       <section className="section pale" aria-label="why" id="why">
         <div className="container">
           <h2 className="section__title">
-            실제로 많은 사람들이 <span className="accent">PlanIt</span>으로 관리하고 있어요.
+            실제로 많은 사람들이 <span className="accent">Momentum</span>으로 관리하고 있어요.
           </h2>
           <p className="section__desc">
             할 일과 일정을 한 화면에서 가볍게 정리하고, JSON으로 저장/복원까지 간단하게.
