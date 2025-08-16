@@ -34,6 +34,7 @@ export default function MonthCalendar({ valueYMD, onChange, countsByDate }) {
 
   const isSameDay = (a,b) => formatYMD(a) === formatYMD(b);
   const isCurMonth = (d) => d.getMonth() === month;
+  const isToday = (d) => formatYMD(d) === formatYMD(new Date());
 
   return (
     <div className="monthcal">
@@ -57,7 +58,7 @@ export default function MonthCalendar({ valueYMD, onChange, countsByDate }) {
               return (
                 <button
                   key={di}
-                  className={`cell ${selected?'selected':''} ${isCurMonth(d)?'cur':''}`}
+                  className={`cell ${selected?'selected':''} ${isCurMonth(d)?'cur':''} ${isToday(d)?'is-today':''}`}
                   onClick={()=>onChange?.(ymd)}
                 >
                   <span className="day">{d.getDate()}</span>

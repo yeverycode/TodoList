@@ -6,6 +6,7 @@ import OneFooter from '../components/OneFooter';
 import '../styles/base.css';
 import '../styles/app.css';
 import '../styles/detail.css'; // 상세 페이지 전용 스타일(타이포/패널/그리드/버튼 등)
+import '../styles/mypage.css';
 
 import useTodos from '../hooks/useTodos';
 import useSchedule from '../hooks/useSchedule';

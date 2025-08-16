@@ -1,0 +1,63 @@
+/* ===== TodoPage 전용 보강 ===== */
+
+/* 섹션 간격(OnePage 느낌) */
+.section-gap { margin-top:16px; }
+.toolbar-row { display:flex; justify-content:space-between; align-items:center; margin-top:12px; }
+
+/* 섹션 제목 하단 선 (OnePage 느낌) */
+.panel h2.hl{
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:10px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:6px;
+}
+
+/* 툴바 버튼/검색 */
+.todo-toolbar .btn{
+  padding:10px 16px !important;
+  border-radius:10px !important;
+  line-height:1 !important;
+  min-height:40px; white-space:nowrap;
+}
+.todo-toolbar .search{ min-width:220px; }
+
+/* 투두 리스트 */
+.todo-list{ display:grid; gap:10px; }
+.todo-item{
+  display:flex; align-items:center; gap:10px; padding:12px;
+  border:1px solid var(--line); border-radius:10px; background:#fff;
+}
+.todo-item .title{ flex:1; }
+.todo-item input[type="checkbox"]{ width:18px; height:18px; accent-color:var(--brand); }
+.todo-item.done{ opacity:.7; text-decoration:line-through; }
+
+/* 진행률 링 */
+.ring{ width:160px; height:160px; position:relative; margin:8px auto 0; }
+.ring svg{ width:100%; height:100%; transform:rotate(-90deg); }
+.ring .bg{ fill:none; stroke:#eef1f5; stroke-width:4; }
+.ring .fg{ fill:none; stroke:var(--brand); stroke-width:4; stroke-linecap:round; stroke-dasharray:100; transition:stroke-dashoffset .3s ease; }
+.ring__label{ align-content:center; position:absolute; inset:0; display:grid; place-items:center; text-align:center; }
+.ring__label strong{ font-size:24px; color:var(--ink); }
+.ring__label .muted{ color:var(--muted); }
+
+/* 진행률 범례 색상 + 정렬 */
+.legend{
+  display:flex; justify-content:center; gap:14px; margin-top:12px;
+  font-size:14px; font-weight:700; margin-left: -30px;
+}
+.legend li{ list-style:none; }
+.legend li.done{ color:#d10909; }   /* 완료 */
+.legend li.active{ color:var(--brand); }      /* 진행중  */
+.legend li.total{ color:#6b7280; }       /* 총 */
+
+/* 빈 리스트 배지 – 하늘색 glass 계열 */
+.badge.empty{
+  background:rgba(221, 240, 247, 0.35); /* lightblue */
+  color:#0369a1;
+  border:1px solid rgba(59,130,246,.25);
+  backdrop-filter:blur(6px);
+  display:block; text-align:center;
+  padding:12px; border-radius:50px;
+  font-weight:600;
+}

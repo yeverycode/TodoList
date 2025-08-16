@@ -1,18 +1,16 @@
-// src/pages/TodoPage.jsx
 import { useEffect, useMemo, useRef } from 'react';
 import OneHeader from '../components/OneHeader';
 import OneFooter from '../components/OneFooter';
 
 import '../styles/base.css';
 import '../styles/app.css';
-import '../styles/detail.css'; // 이 파일에 아래 제공 CSS를 붙여넣으세요.
+import '../styles/detail.css';
+import '../styles/todolist.css';
 
 import useTodos from '../hooks/useTodos';
 import TodoInput from '../components/todo/TodoInput';
 import TodoToolbar from '../components/todo/TodoToolbar';
 import TodoList from '../components/todo/TodoList';
-
-// import logo from '../assets/momentum-logo.png';
 
 export default function TodoPage() {
   const h1Ref = useRef(null);
@@ -38,9 +36,6 @@ export default function TodoPage() {
       <main className="detail">
         {/* 헤더 */}
         <header className="detail-head">
-          {/* <div className="logo" aria-hidden="true">
-            <img src={logo} alt="" />
-          </div> */}
           <h1 tabIndex={-1} ref={h1Ref}>오늘의 할 일</h1>
           <span className="eyebrow">TODAY</span>
         </header>
@@ -51,7 +46,7 @@ export default function TodoPage() {
             <TodoInput onAdd={addTodo} />
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+          <div className="toolbar-row">
             <TodoToolbar
               filter={filter}
               setFilter={setFilter}
@@ -67,9 +62,10 @@ export default function TodoPage() {
         </section>
 
         {/* 진행률 + 리스트 */}
-        <section className="grid-2" style={{ marginTop: 16 }}>
+        <section className="grid-2 section-gap">
           <article className="panel" aria-label="오늘 진행 상황">
             <h2 className="hl">오늘 진행률</h2>
+
             <div className="ring" aria-hidden="true">
               <svg viewBox="0 0 36 36">
                 <path className="bg" d="M18 2a16 16 0 1 1 0 32A16 16 0 1 1 18 2" />
@@ -85,10 +81,10 @@ export default function TodoPage() {
               </div>
             </div>
 
-            <ul className="legend" style={{ display: 'flex', justifyContent: 'center', gap: 14, marginTop: 12 }}>
-              <li>완료 {done}</li>
-              <li className="muted">진행 {active}</li>
-              <li className="muted">총 {total}</li>
+            <ul className="legend">
+              <li className="done">완료 {done}</li>
+              <li className="active">진행 {active}</li>
+              <li className="total">총 {total}</li>
             </ul>
           </article>
 

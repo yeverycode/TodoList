@@ -1,4 +1,5 @@
 // ===== src/pages/OnePage.jsx =====
+import { useEffect } from 'react';
 import OneHeader from '../components/OneHeader';
 import OneFooter from '../components/OneFooter';
 import '../styles/onepage.css';
@@ -33,6 +34,31 @@ const SadIcon = () => (
 );
 
 export default function OnePage(){
+  // 카드 Glow 효과: 마우스 위치 → CSS 변수(--x, --y)
+  useEffect(() => {
+    const cards = Array.from(document.querySelectorAll('.card.tilt'));
+    const handlers = new Map();
+
+    cards.forEach(card => {
+      const onMove = (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--x', `${x}px`);
+        card.style.setProperty('--y', `${y}px`);
+      };
+      handlers.set(card, onMove);
+      card.addEventListener('mousemove', onMove);
+    });
+
+    return () => {
+      cards.forEach(card => {
+        const h = handlers.get(card);
+        if (h) card.removeEventListener('mousemove', h);
+      });
+    };
+  }, []);
+
   return (
     <>
       <OneHeader />
@@ -122,17 +148,17 @@ export default function OnePage(){
                   </div>
                 </div>
 
-                {/* 수평 프로그레스바(선택) */}
-                <div className="hbar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={76}>
-                  <div className="hbar__fill" style={{width:'76%'}} />
-                </div>
+                {/* 목록/바 래퍼: 중앙 정렬 폭 관리 */}
+                <div className="todo-snap__list-wrapper">
+                  {/* 수평 프로그레스바 */}
 
-                <ul className="list">
-                  <li className="done"><input type="checkbox" defaultChecked /> 슬라이드 점검</li>
-                  <li><input type="checkbox" /> 알고리즘 과제</li>
-                  <li><input type="checkbox" /> 헬스장 30분</li>
-                  <li><input type="checkbox" /> 동아리 면접</li>
-                </ul>
+                  <ul className="list">
+                    <li className="done"><input type="checkbox" defaultChecked /> 슬라이드 점검</li>
+                    <li><input type="checkbox" /> 알고리즘 과제</li>
+                    <li><input type="checkbox" /> 헬스장 30분</li>
+                    <li><input type="checkbox" /> 동아리 면접</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </article>
@@ -163,9 +189,21 @@ export default function OnePage(){
                 </div>
 
                 <ul className="timeline">
-                  <li><time>10:00</time><div><strong>스탠드업</strong><p className="muted">Google Meet · 15분</p></div></li>
-                  <li><time>13:30</time><div><strong>UI 리팩토링</strong><p className="muted">컴포넌트 정리</p></div></li>
-                  <li><time>18:00</time><div><strong>운동</strong><p className="muted">헬스장</p></div></li>
+                  <li>
+                    <div className="timeline__icon" />
+                    <time>10:00</time>
+                    <div><strong>스탠드업</strong><p className="muted">Google Meet · 15분</p></div>
+                  </li>
+                  <li>
+                    <div className="timeline__icon" />
+                    <time>13:30</time>
+                    <div><strong>UI 리팩토링</strong><p className="muted">컴포넌트 정리</p></div>
+                  </li>
+                  <li>
+                    <div className="timeline__icon" />
+                    <time>18:00</time>
+                    <div><strong>운동</strong><p className="muted">헬스장</p></div>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -176,7 +214,7 @@ export default function OnePage(){
             <div className="feature__text">
               <span className="eyebrow">마이페이지</span>
               <h2>내 기록이 만드는 루틴</h2>
-              <p className="muted">완료율과 연속 실행일, 백업 히스토리로 꾸준함을 시각화합니다.</p>
+              <p className="muted">일정을 캘린더에 기록하고 완료율을 확인하며 꾸준함을 시각화합니다.</p>
               <div className="feature__ctas">
                 <a href="/mypage" className="btn solid">상세 보기</a>
                 <a href="#cta" className="btn outline">지금 시작하기</a>
@@ -198,9 +236,9 @@ export default function OnePage(){
               </div>
               <div className="card history glass">
                 <ul>
-                  <li><span className="badge">백업</span> 2025-08-10 <span className="muted">todo-0810</span></li>
-                  <li><span className="badge alt">복원</span> 2025-08-07 <span className="muted">events-0807</span></li>
-                  <li><span className="badge">백업</span> 2025-08-01 <span className="muted">all-0801</span></li>
+                  <li><span className="badge">공부</span> 2025-08-10 <span className="muted">알고리즘 공부</span></li>
+                  <li><span className="badge alt">운동</span> 2025-08-07 <span className="muted">공복 유산소 30분</span></li>
+                  <li><span className="badge">기타</span> 2025-08-01 <span className="muted">명상 10분</span></li>
                 </ul>
               </div>
             </div>
