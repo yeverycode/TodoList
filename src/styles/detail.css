@@ -120,7 +120,7 @@ main.detail{
 .btn.outline:hover{ border-color:#d6dbe3; }
 .btn.ghost{ background:#fff; border:1px solid var(--line); color:#1f2937; }
 
-/* 툴바 버튼(내보내기/불러오기)도 동일 규격 보장 */
+/* 툴바 버튼 */
 .todo-toolbar .btn{
   padding:10px 16px !important;
   border-radius:10px !important;
@@ -147,7 +147,7 @@ main.detail{
 .ring svg{ width:100%; height:100%; transform:rotate(-90deg); }
 .ring .bg{ fill:none; stroke:#eef1f5; stroke-width:4; }
 .ring .fg{ fill:none; stroke:var(--brand); stroke-width:4; stroke-linecap:round; stroke-dasharray:100; transition:stroke-dashoffset .3s ease; }
-.ring__label{ position:absolute; inset:0; display:grid; place-items:center; text-align:center; }
+.ring__label{ align-content: center; position:absolute; inset:0; display:grid; place-items:center; text-align:center; }
 .ring__label strong{ font-size:24px; color:var(--ink); }
 .ring__label .muted{ color:var(--muted); }
 
@@ -158,12 +158,8 @@ main.detail{
 /* 보조 텍스트 */
 .muted{ color:var(--muted); }
 
-/* 빠른 액션(스케줄 상단) */
-.quick-actions{ display:flex; align-items:center; gap:10px; margin:6px 0 10px; }
-.qa-hint{ font-size:13px; }
-
 /* =========================
-   MyPage — 폼·버튼 스케일 & 레이아웃
+   MyPage — 폼·버튼
    ========================= */
 .mypage-grid input[type="text"],
 .mypage-grid input[type="email"],
@@ -203,7 +199,7 @@ main.detail{
 .mypage-grid .btn--lg{ padding:12px 20px; border-radius:12px; font-size:15px; font-weight:800; }
 .mypage-grid .btn--block{ width:100%; }
 
-/* 패널 헤더/베이식 정리 */
+/* 패널 헤더 */
 .detail-head h1{ font-size:26px; font-weight:800; letter-spacing:-.01em; }
 .panel{ padding:16px 16px 14px; }
 .panel-head{
@@ -213,7 +209,7 @@ main.detail{
 .panel-head h2{ font-size:18px; font-weight:800; margin:0; color:var(--ink); }
 .badge{ padding:4px 8px; border-radius:999px; background:#eaf6ee; color:#1a7f37; font-weight:700; font-size:12px; }
 
-/* 프로필 폼 레이아웃 */
+/* 프로필 폼 */
 .panel .form{ display:grid; gap:10px; }
 .panel .form > label{ display:grid; grid-template-columns:88px 1fr; align-items:center; gap:10px; }
 .panel .form > label > span{ color:#6b7280; font-size:14px; }
@@ -234,7 +230,7 @@ main.detail{
 .history{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
 .history li{
   display:grid; grid-template-columns:80px 160px 1fr; align-items:center; gap:8px;
-  padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:#fff;
+  padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:#fff; margin-left:-40px;
 }
 .history .tag{
   display:inline-grid; place-items:center;

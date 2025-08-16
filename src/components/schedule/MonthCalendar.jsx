@@ -18,6 +18,7 @@ function getWeeks(d){
   return weeks;
 }
 
+/** countsByDate: { [ymd]: { pending:number; done:number } } */
 export default function MonthCalendar({ valueYMD, onChange, countsByDate }) {
   const date = useMemo(()=> new Date(valueYMD), [valueYMD]);
   const year = date.getFullYear();
@@ -51,7 +52,7 @@ export default function MonthCalendar({ valueYMD, onChange, countsByDate }) {
           <div className="week" key={wi}>
             {wk.map((d, di)=>{
               const ymd = formatYMD(d);
-              const count = countsByDate?.[ymd] || 0;
+              const cnt = countsByDate?.[ymd] || { pending:0, done:0 };
               const selected = isSameDay(d, date);
               return (
                 <button
@@ -60,7 +61,12 @@ export default function MonthCalendar({ valueYMD, onChange, countsByDate }) {
                   onClick={()=>onChange?.(ymd)}
                 >
                   <span className="day">{d.getDate()}</span>
-                  {count>0 && <span className="dot" aria-label={`${count}개의 일정`} />}
+                  {(cnt.pending>0 || cnt.done>0) && (
+                    <span className="dots" aria-label={`진행 ${cnt.pending}, 완료 ${cnt.done}`}>
+                      <i className="dot dot--pending" />
+                      <i className="dot dot--done" />
+                    </span>
+                  )}
                 </button>
               );
             })}

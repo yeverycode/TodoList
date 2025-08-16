@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function EventList({ items = [], selectedDate, onRemove, onReorder, dragSourceRef }) {
   const list = Array.isArray(items) ? items : [];
   if (list.length === 0) return <div className="badge">이 날짜엔 일정이 없습니다</div>;
@@ -34,6 +36,7 @@ export default function EventList({ items = [], selectedDate, onRemove, onReorde
           <div className="event-time">{ev.time || '—'}</div>
           <div className="event-title">
             {ev.title}
+            {ev.category && <span className="cat-badge">{ev.category}</span>}
             {ev.__isOccurrence && <span className="badge" style={{marginLeft:8}}>반복</span>}
           </div>
           <button className="icon danger" onClick={()=>onRemove?.(new Date(selectedDate), ev.id)} aria-label="삭제" disabled={!!ev.__isOccurrence}>✕</button>

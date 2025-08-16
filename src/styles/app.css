@@ -137,7 +137,6 @@ h1{ margin:0 0 8px; }
 }
 .section.mypage{ max-width:1080px; margin-inline:auto; padding:20px; }
 .panel{ background:var(--bg-card); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:0 1px 3px rgba(15,23,42,.06); }
-.panel + .panel{ margin-top:16px; }
 .panel-head h2{ font-size:20px; font-weight:700; border-bottom:2px solid var(--line); padding-bottom:6px; margin-bottom:12px; color:var(--text-strong); }
 .panel-body{ padding-top:4px; }
 

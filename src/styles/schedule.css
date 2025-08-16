@@ -1,0 +1,182 @@
+/* =========================
+   Schedule — Layout
+   ========================= */
+
+/* 상단 퀵 액션 */
+.quick-actions{
+  display:flex; align-items:center; gap:12px;
+  margin:6px 0 16px;
+}
+.qa-hint{ font-size:13px; color:#9ca3af; }
+
+/* 좌:달력 / 우:당일 관리 2단 레이아웃 */
+.schedule-two-col.grid-2{
+  display:grid;
+  grid-template-columns:380px 1fr;
+  gap:24px;
+  align-items:start;
+}
+@media (max-width:980px){
+  .schedule-two-col.grid-2{ grid-template-columns:1fr; }
+}
+
+/* =========================
+   ScheduleToolbar (날짜 선택만)
+   ========================= */
+/* [수정] 다른 요소들과의 간격을 일관되게 조정 */
+.schedule-toolbar{
+  display:flex; gap:10px; align-items:center; justify-content:flex-start;
+  margin-bottom: 16px; /* 하단 간격 통일 */
+  background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px;
+}
+.datepick{ display:flex; align-items:center; gap:8px; }
+.datepick input{
+  padding:8px 10px; border:1px solid var(--line); border-radius:8px; height:40px; font-size:14px;
+}
+
+/* =========================
+   Month Calendar
+   ========================= */
+.monthcal{
+  /* [수정] 불필요한 마진 제거하여 레이아웃 정렬 보조 */
+  border:1px solid var(--line); border-radius:12px; background:#fff; padding:16px;
+  box-shadow:0 1px 3px rgba(15,23,42,.06);
+}
+.monthcal__head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.monthcal__head .title{ font-weight:800; font-size: 16px; }
+.monthcal__grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+.monthcal .dow{ font-size:12px; color:var(--muted); text-align:center; padding:4px 0; font-weight: 600; }
+.monthcal .week{ display:contents; }
+
+.monthcal .cell{
+  position:relative; height:80px; /* 높이 소폭 조정 */
+  border:1px solid transparent; /* 기본 border는 투명 처리 */
+  border-radius:10px; background:#f8f9fa; /* 배경색 추가 */
+  padding:6px; text-align:left; cursor:pointer;
+  transition: all 0.2s ease;
+}
+.monthcal .cell:hover {
+  background-color: #f1f3f5;
+}
+.monthcal .cell.cur{ background:#fff; border-color: var(--line); }
+.monthcal .cell.selected{ outline:2px solid var(--brand); background-color: #eef2ff; }
+.monthcal .cell .day{ font-weight:700; font-size: 13px; }
+.monthcal .dots{ position:absolute; right:8px; bottom:8px; display:flex; gap:5px; }
+.monthcal .dot{ width:7px; height:7px; border-radius:999px; }
+.monthcal .dot--pending{ background:var(--brand); }
+.monthcal .dot--done{ background:#a5b4fc; } /* [수정] 완료 점 색상도 파란 계열로 변경 */
+
+/* =========================
+   EventInput
+   ========================= */
+.event-input{ display:flex; gap:8px; margin-bottom: 16px; /* [수정] 하단 간격 통일 */ flex-wrap:wrap; }
+.event-input input[type="time"],
+.event-input input[aria-label="제목"],
+.event-input .repeat input[type="number"],
+.event-input .repeat select,
+.event-input input[type="date"] {
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  height:42px; /* 높이 통일 */
+  font-size: 14px;
+}
+.event-input input[aria-label="제목"]{ flex:1; min-width:200px; }
+.event-input .repeat{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+/* =========================
+   Category Chips (필터)
+   ========================= */
+.filters{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 16px; /* [수정] 하단 간격 통일 */ }
+.filters button{
+  padding:8px 14px; min-height:36px;
+  border-radius:999px; background:#fff; border:1px solid var(--line);
+  font-weight:600; font-size:14px; line-height:1; white-space:nowrap; cursor:pointer;
+}
+.filters button.active{
+  border-color:var(--brand);
+  background:#eef2ff;
+  color: #312e81;
+  font-weight: 700;
+}
+
+/* =========================
+   DayBuckets — 해야 할 일 / 완료됨
+   ========================= */
+.day-buckets.grid-2{
+  display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  align-items:stretch;
+}
+.day-buckets > article.panel{
+  display:flex; flex-direction:column; min-height:300px;
+}
+.day-buckets .panel-head{ margin-bottom:4px; }
+.day-buckets .event-list{
+  display:flex; flex-direction:column; gap:10px; margin-top:8px; flex:1;
+}
+
+/* 이벤트 아이템 */
+.event-list .event-item{
+  display:flex; align-items:center; gap:10px; padding:12px;
+  border:1px solid var(--line); border-radius:10px; background:#fff;
+  transition:border-color .12s, box-shadow .12s, transform .06s;
+}
+.event-list .event-item:hover{
+  border-color:#d1d5db; box-shadow:0 2px 4px rgba(0,0,0,.05); transform:translateY(-1px);
+}
+.drag-handle{
+  width:16px; text-align:center; font-weight:900; color:#ced4da; /* 핸들 색상 변경 */
+  cursor:grab; user-select:none;
+}
+
+.event-list .event-item input[type="checkbox"]{ width:18px; height:18px; accent-color:var(--brand); }
+.event-time{ width:72px; font-variant-numeric:tabular-nums; color:#495057; font-weight:500; font-size:14px; }
+.event-title{ flex:1; display:flex; align-items:center; gap:8px; }
+
+/* 반복 발생 스타일 */
+.event-item.occ{
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    repeating-linear-gradient(45deg, #f1f4ff 0 2px, transparent 2px 6px) border-box;
+  border:1px solid #e3e8ff;
+}
+
+/* [개선] 완료 카드 — 초록색 대신 회색/파란색 톤으로 변경하여 통일감 부여 */
+.event-item.done{
+  background-color: #f8f9fa; /* 옅은 회색 배경 */
+  border-color: #e9ecef;
+  box-shadow: none;
+}
+.event-list.done .event-item {
+  opacity: 0.7;
+}
+.event-list.done .event-title{
+  color: var(--muted); /* 흐린 텍스트 색상 */
+  text-decoration: line-through; /* 취소선 추가 */
+}
+
+/* 비어 있는 완료 리스트 메시지 */
+.completed-empty{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap: 8px; flex:1; padding:20px;
+  border:2px dashed var(--line); border-radius:10px;
+  background:#f9fafb; color:var(--muted); text-align:center; font-size:14px;
+}
+.completed-empty::before {
+  content: '✓';
+  font-size: 24px;
+  color: #dee2e6;
+}
+
+
+/* 삭제 아이콘 버튼 */
+.icon.danger{
+  background:transparent; border:none; border-radius:999px;
+  width: 32px; height: 32px; display: grid; place-items: center;
+  cursor:pointer; color: #adb5bd;
+  transition: all 0.15s ease;
+}
+.icon.danger:hover {
+  background-color: #fff1f2;
+  color: #be123c;
+}

@@ -1,47 +1,67 @@
 // src/pages/SchedulePage.jsx
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import OneHeader from '../components/OneHeader';
 import OneFooter from '../components/OneFooter';
 
 import '../styles/base.css';
 import '../styles/app.css';
-import '../styles/detail.css'; // 상세 페이지 전용(타이포/패널/그리드/버튼 등)
+import '../styles/detail.css';
+import '../styles/schedule.css';
 
 import useSchedule from '../hooks/useSchedule';
 import ScheduleToolbar from '../components/schedule/ScheduleToolbar';
 import EventInput from '../components/schedule/EventInput';
-import EventList from '../components/schedule/EventList';
 import MonthCalendar from '../components/schedule/MonthCalendar';
+import CategoryChips from '../components/schedule/CategoryChips';
+import DayBuckets from '../components/schedule/DayBuckets';
+
 import { requestNotifyPermission, showNotification, startDueWatcher } from '../services/notify';
 import { formatYMD } from '../utils/date';
 
-// import logo from '../assets/momentum-logo.png';
-
 export default function SchedulePage() {
   const h1Ref = useRef(null);
+  const [category, setCategory] = useState('all');
+
+  // 초기 카테고리(라벨 그대로 사용)
+  const [categories, setCategories] = useState([
+    { value:'study', label:'공부' },
+    { value:'workout', label:'운동' },
+    { value:'parttime', label:'알바' },
+    { value:'etc', label:'기타' },
+  ]);
+  const addCategory = (label) => {
+    const trimmed = (label || '').trim();
+    if (!trimmed) return;
+    const exists = categories.some(c => c.label === trimmed);
+    if (exists) { setCategory(trimmed); return; }
+    const value = trimmed; // 라벨을 값으로 사용 (필터 매칭 간단)
+    const next = [...categories, { value, label: trimmed }];
+    setCategories(next);
+    setCategory(value);
+  };
 
   const {
     selectedDate, setSelectedDate,
-    addEvent, removeEvent, getBaseEventsByDate, getEventsByDate,
-    exportEvents, importEvents,
+    addEvent, removeEvent,
+    getEventsByDate,
     reorderEvent, dragSourceRef,
     getDueNow,
+    toggleEventDone,
+    countsByDateForMonth, // { [ymd]: { pending, done } }
   } = useSchedule();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     h1Ref.current?.focus();
 
-    // 알림 권한 요청(선택)
     requestNotifyPermission();
 
-    // 화면 열려 있을 때만 due 체크(30초 주기)
     const stop = startDueWatcher(
       getDueNow,
       (ev) => {
         showNotification('일정 알림', {
           body: `${ev.time || ''} ${ev.title}`.trim(),
-          tag: `${ev.ymd}-${ev.id}`, // 중복 방지
+          tag: `${ev.ymd}-${ev.id}`,
         });
       },
       30000
@@ -50,33 +70,29 @@ export default function SchedulePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 월간 뱃지: 해당 날짜 base 이벤트(반복분 제외) 개수
-  const countsByDate = useMemo(() => {
-    const base = {};
-    const today = new Date(selectedDate);
-    const y = today.getFullYear(), m = today.getMonth();
-    const start = new Date(y, m, 1);
-    const end = new Date(y, m + 1, 0);
-    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      const ymd = formatYMD(d);
-      base[ymd] = getBaseEventsByDate(d).length;
-    }
-    return base;
-  }, [selectedDate, getBaseEventsByDate]);
+  const countsByDate = useMemo(
+    () => countsByDateForMonth(selectedDate),
+    [selectedDate, countsByDateForMonth]
+  );
 
-  const todaysEvents = useMemo(
+  const todaysEventsAll = useMemo(
     () => getEventsByDate(new Date(selectedDate)),
     [selectedDate, getEventsByDate]
   );
 
-  // 접근성 있는 날짜 라벨
+  const todaysEvents = useMemo(() => {
+    if (category === 'all') return todaysEventsAll;
+    // value와 label이 동일한 구조를 허용하므로 둘 다 체크
+    return todaysEventsAll.filter(ev => ev.category === category || ev.category === categories.find(c=>c.value===category)?.label);
+  }, [todaysEventsAll, category, categories]);
+
   const dateObj = new Date(selectedDate);
   const dateLabel = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일 (${['일','월','화','수','목','금','토'][dateObj.getDay()]})`;
 
-  // 빠른 액션
-  const jumpToday = () => {
-    const now = new Date();
-    setSelectedDate(formatYMD(now));
+  const jumpToday = () => setSelectedDate(formatYMD(new Date()));
+  const onToggleDone = (ev) => {
+    const occYMD = ev.__occurrenceDateYMD;
+    toggleEventDone(ev, !ev.done, occYMD);
   };
 
   return (
@@ -84,16 +100,11 @@ export default function SchedulePage() {
       <OneHeader />
 
       <main className="detail">
-        {/* 상단 강조 헤더 */}
         <header className="detail-head">
-          {/* <div className="logo" aria-hidden="true">
-            <img src={logo} alt="" />
-          </div> */}
           <h1 tabIndex={-1} ref={h1Ref}>일정</h1>
           <span className="eyebrow">SCHEDULE</span>
         </header>
 
-        {/* 안내 문구 제거, 빠른 액션만 유지 */}
         <div className="quick-actions" role="group" aria-label="빠른 액션">
           <button className="btn outline btn--sm" onClick={jumpToday} aria-label="오늘로 이동">
             오늘로 이동
@@ -101,11 +112,10 @@ export default function SchedulePage() {
           <span className="muted qa-hint">달력에서 날짜를 클릭해 당일 일정을 관리하세요.</span>
         </div>
 
-        {/* 2열: 왼쪽 달력 / 오른쪽 당일 일정 */}
-        <section className="grid-2" style={{ marginTop: 8 }}>
-          {/* 왼쪽: 월간 달력 패널 */}
+        {/* 좌: 달력(더 넓게) / 우: 날짜별 관리 */}
+        <section className="grid-2 schedule-two-col" style={{ marginTop: 8 }}>
           <aside className="panel" aria-label="월간 달력">
-            <h2 className="hl">달력</h2>
+            <h2 className="hl"> </h2>
             <MonthCalendar
               valueYMD={selectedDate}
               onChange={setSelectedDate}
@@ -113,30 +123,42 @@ export default function SchedulePage() {
             />
           </aside>
 
-          {/* 오른쪽: 당일 타임라인 패널 */}
           <section className="panel" aria-label="선택한 날짜의 일정">
             <div className="panel-head" style={{ marginBottom: 10 }}>
               <h2 className="hl" style={{ marginBottom: 6 }}>{dateLabel}</h2>
             </div>
 
-            {/* 툴바 */}
+            {/* 날짜 선택만 남기고, IO 버튼 제거된 간소툴바 */}
             <ScheduleToolbar
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
-              exportData={exportEvents}
-              importData={importEvents}
+              hideIO
             />
 
-            {/* 입력 */}
-            <EventInput selectedDate={selectedDate} onAdd={addEvent} />
-
-            {/* 리스트 */}
-            <EventList
-              items={todaysEvents}
+            {/* 입력 — 카테고리 옵션 전달 */}
+            <EventInput
               selectedDate={selectedDate}
-              onRemove={removeEvent}
-              onReorder={reorderEvent}
+              onAdd={addEvent}
+              categoryOptions={categories}
+            />
+
+            {/* 카테고리 칩 + 직접 추가 */}
+            <CategoryChips
+              value={category}
+              onChange={setCategory}
+              options={categories}
+              onAddCategory={addCategory}
+            />
+
+            {/* 날짜별 버킷: 동일 높이로 정렬됨 */}
+            <DayBuckets
+              items={todaysEvents}
+              category="all"
+              onToggleDone={onToggleDone}
+              onRemove={(id)=>removeEvent(id)}
+              onReorder={(from,to)=>reorderEvent(selectedDate, from, to)}
               dragSourceRef={dragSourceRef}
+              categoryOptions={categories}
             />
           </section>
         </section>
