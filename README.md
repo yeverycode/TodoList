@@ -69,7 +69,7 @@ npm start
 
 ---
 
-## Screenshots (예시 자리)
+## Screenshots
 
 * **오늘의 할 일 페이지** — 체크리스트 + 진행률
 <img width="2868" height="1444" alt="image" src="https://github.com/user-attachments/assets/4bc0a7b2-624c-45aa-be7f-902de73a08de" />
