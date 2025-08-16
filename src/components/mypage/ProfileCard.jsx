@@ -1,4 +1,3 @@
-// src/components/mypage/ProfileCard.jsx
 import { useEffect, useState } from 'react';
 
 const PROFILE_KEY = 'planit.profile.v1';
@@ -31,7 +30,7 @@ export default function ProfileCard() {
   };
 
   return (
-    <section className="panel">
+    <section className="panel card glass">
       <div className="panel-head">
         <h2>프로필</h2>
         {saved && <span className="badge">저장됨</span>}

@@ -1,11 +1,10 @@
-// src/pages/MyPage.jsx
 import { useEffect, useMemo, useRef } from 'react';
 import OneHeader from '../components/OneHeader';
 import OneFooter from '../components/OneFooter';
 
 import '../styles/base.css';
 import '../styles/app.css';
-import '../styles/detail.css'; // 상세 페이지 전용 스타일(타이포/패널/그리드/버튼 등)
+import '../styles/detail.css';
 import '../styles/mypage.css';
 
 import useTodos from '../hooks/useTodos';
@@ -13,9 +12,6 @@ import useSchedule from '../hooks/useSchedule';
 
 import ProfileCard from '../components/mypage/ProfileCard';
 import StatsBlock from '../components/mypage/StatsBlock';
-import BackupPanel from '../components/mypage/BackupPanel';
-
-// import logo from '../assets/momentum-logo.png';
 
 export default function MyPage() {
   const h1Ref = useRef(null);
@@ -58,22 +54,16 @@ export default function MyPage() {
     <>
       <OneHeader compact />
 
-      <main className="detail">
+      <main className="detail gradient">
         {/* 상단 강조 헤더 */}
         <header className="detail-head">
-          {/* <div className="logo" aria-hidden="true">
-            <img src={logo} alt="" />
-          </div> */}
           <h1 tabIndex={-1} ref={h1Ref}>마이페이지</h1>
           <span className="eyebrow">MYPAGE</span>
         </header>
 
-        {/* 설명 문구 제거됨 */}
-
-        {/* 보드형 2열 레이아웃 */}
-        <section className="mypage-grid" aria-label="마이페이지 콘텐츠">
+        {/* Glass/Gradient 스타일 적용된 보드형 2열 레이아웃 */}
+        <section className="mypage-grid board elevate glass" aria-label="마이페이지 콘텐츠">
           <ProfileCard />
-
           <StatsBlock
             total={stats.total}
             done={stats.done}
@@ -82,8 +72,6 @@ export default function MyPage() {
             days={stats.days}
             eventTotal={stats.eventTotal}
           />
-
-          <BackupPanel />
         </section>
       </main>
 

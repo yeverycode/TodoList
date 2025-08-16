@@ -1,6 +1,6 @@
 export default function StatsBlock({ total, done, open, rate, days = [], eventTotal }) {
   return (
-    <section className="panel">
+    <section className="panel card glass">
       <div className="panel-head">
         <h2>진행 통계</h2>
         <span className="badge">실시간</span>
@@ -38,7 +38,7 @@ export default function StatsBlock({ total, done, open, rate, days = [], eventTo
         ))}
         {days.length === 0 && <p className="muted">표시할 데이터가 없습니다</p>}
       </div>
-      <p className="muted small">※ 항목에 <code>doneAt</code>(YYYY-MM-DD)이 있을 때 최근 7일 막대가 집계돼요.</p>
+      <p className="muted small">※ <code>doneAt</code>(YYYY-MM-DD)이 있어야 최근 7일 막대가 집계돼요.</p>
     </section>
   );
 }
