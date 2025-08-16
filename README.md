@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# Momentum - TodoList toy project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> **투두 · 일정 · 마이페이지 — 하루를 정리하는 올인원 서비스**
 
-## Available Scripts
+React 기반으로 제작된 TodoList 프로젝트로,
+오늘의 할 일 관리, 일정 달력, 마이페이지 루틴 시각화를 제공합니다.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 1. 오늘의 할 일 (TodoPage)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* 하루 단위 집중 뷰: **체크리스트 + 진행률**
+* 중요도/완료 상태 기반으로 **우선순위 정리**
+* Glass / Gradient UI, 카드 Glow 효과 적용
 
-### `npm test`
+### 2. 일정 관리 (SchedulePage)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* **월간 달력 + 하루 타임라인** 뷰 제공
+* 카테고리(공부, 운동, 알바, 기타)별 일정 관리
+* 직접 카테고리 추가 가능
+* 일정 알림(Notification API) 지원
+* 드래그 & 드롭으로 **일정 순서 변경**
 
-### `npm run build`
+### 3. 마이페이지 (MyPage)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* 프로필 카드: 사용자 이름, 전공 등 표시
+* 할 일 통계:
+  * 총 개수, 완료/미완료, 달성률
+  * 최근 7일 완료 히스토리
+  * 일정 개수 통계
+* 꾸준함을 시각화하는 **루틴 보드 레이아웃**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 주요 페이지 구조
 
-### `npm run eject`
+```bash
+src/pages/
+ ├── OnePage.jsx        # 메인 소개 페이지 (오늘의 할 일, 일정, 마이페이지 요약)
+ ├── TodoPage.jsx       # 오늘의 할 일 상세 관리
+ ├── SchedulePage.jsx   # 달력/타임라인 기반 일정 관리
+ └── MyPage.jsx         # 사용자 통계 및 루틴 시각화
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 실행 방법
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 1) 프로젝트 클론
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+git clone https://github.com/yeverycode/TodoList.git
+cd TodoList
+```
 
-## Learn More
+### 2) 패키지 설치
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npm install
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 3) 실행
 
-### Code Splitting
+```bash
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## Screenshots (예시 자리)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+* **오늘의 할 일 페이지** — 체크리스트 + 진행률
+<img width="2868" height="1444" alt="image" src="https://github.com/user-attachments/assets/4bc0a7b2-624c-45aa-be7f-902de73a08de" />
 
-### Making a Progressive Web App
+* **일정 페이지** — 달력 & 타임라인
+<img width="2868" height="1438" alt="image" src="https://github.com/user-attachments/assets/880df447-fa6b-4818-af0a-b88e6c133aa2" />
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+* **마이페이지** — 프로필 & 통계
+<img width="2856" height="1432" alt="image" src="https://github.com/user-attachments/assets/e06e123b-ec64-410e-9808-242e70da8219" />
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 향후 확장 계획
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* 사용자 DB 연동 (현재는 LocalStorage 기반)
+* 백엔드 API 연계 (Java + MySQL)
