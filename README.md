@@ -98,16 +98,7 @@ npm start
 
 - **마이페이지** — 프로필 & 통계
   <img width="2856" height="1432" alt="image" src="https://github.com/user-attachments/assets/e06e123b-ec64-410e-9808-242e70da8219" />
-  =======
 
-* **오늘의 할 일 페이지** — 체크리스트 + 진행률
-  <img width="2868" height="1444" alt="image" src="https://github.com/user-attachments/assets/4bc0a7b2-624c-45aa-be7f-902de73a08de" />
-
-* **일정 페이지** — 달력 & 타임라인
-  <img width="2868" height="1438" alt="image" src="https://github.com/user-attachments/assets/880df447-fa6b-4818-af0a-b88e6c133aa2" />
-
-* **마이페이지** — 프로필 & 통계
-  <img width="2856" height="1432" alt="image" src="https://github.com/user-attachments/assets/e06e123b-ec64-410e-9808-242e70da8219" />
 
 ---
 
