@@ -1,0 +1,28 @@
+/* src/styles/auth.css */
+/* 마이페이지 panel/btn 토큰을 그대로 활용하고, 몇 가지만 덧칠 */
+
+.auth-panel { max-width: 560px; margin: 0 auto; }
+
+.auth-error {
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid #fecaca;
+  background: #fff1f2;
+  color: #991b1b;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.auth-ok {
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid #bbf7d0;
+  background: #ecfdf5;
+  color: #065f46;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.auth-switch { margin-top: 12px; text-align: center; }
+.auth-switch a { color: var(--brand); font-weight: 700; text-decoration: none; }
+.auth-switch a:hover { text-decoration: underline; }

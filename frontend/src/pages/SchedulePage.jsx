@@ -9,6 +9,7 @@ import '../styles/detail.css';
 import '../styles/schedule.css';
 
 import useSchedule from '../hooks/useSchedule';
+import useTodos from '../hooks/useTodos';
 import ScheduleToolbar from '../components/schedule/ScheduleToolbar';
 import EventInput from '../components/schedule/EventInput';
 import MonthCalendar from '../components/schedule/MonthCalendar';
@@ -22,19 +23,22 @@ export default function SchedulePage() {
   const h1Ref = useRef(null);
   const [category, setCategory] = useState('all');
 
+  // ✅ Todo 훅 (문자열 title을 받는 addTodo)
+  const { addTodo } = useTodos() || {};
+
   // 초기 카테고리(라벨 그대로 사용)
   const [categories, setCategories] = useState([
-    { value:'study', label:'공부' },
-    { value:'workout', label:'운동' },
-    { value:'parttime', label:'알바' },
-    { value:'etc', label:'기타' },
+    { value: 'study',    label: '공부' },
+    { value: 'workout',  label: '운동' },
+    { value: 'parttime', label: '알바' },
+    { value: 'etc',      label: '기타' },
   ]);
   const addCategory = (label) => {
     const trimmed = (label || '').trim();
     if (!trimmed) return;
     const exists = categories.some(c => c.label === trimmed);
     if (exists) { setCategory(trimmed); return; }
-    const value = trimmed; // 라벨을 값으로 사용 (필터 매칭 간단)
+    const value = trimmed; // 라벨을 값으로 사용
     const next = [...categories, { value, label: trimmed }];
     setCategories(next);
     setCategory(value);
@@ -83,7 +87,10 @@ export default function SchedulePage() {
   const todaysEvents = useMemo(() => {
     if (category === 'all') return todaysEventsAll;
     // value와 label이 동일한 구조를 허용하므로 둘 다 체크
-    return todaysEventsAll.filter(ev => ev.category === category || ev.category === categories.find(c=>c.value===category)?.label);
+    return todaysEventsAll.filter(
+      ev => ev.category === category ||
+            ev.category === categories.find(c => c.value === category)?.label
+    );
   }, [todaysEventsAll, category, categories]);
 
   const dateObj = new Date(selectedDate);
@@ -93,6 +100,19 @@ export default function SchedulePage() {
   const onToggleDone = (ev) => {
     const occYMD = ev.__occurrenceDateYMD;
     toggleEventDone(ev, !ev.done, occYMD);
+  };
+
+  // EventInput이 호출하는 시그니처에 맞춘 래퍼
+  const handleAddEvent = (dateObjArg, title, time, repeat, categoryVal) => {
+    // 1) 일정 저장 (useSchedule 시그니처: (dateObj, title, time, repeat, category))
+    addEvent(dateObjArg, title, time, repeat, categoryVal);
+
+    // 2) 오늘이면 Todo 자동 추가 (시간이 있으면 "HH:mm 제목", 없으면 "제목")
+    const todayYMD = formatYMD(new Date());
+    if (formatYMD(dateObjArg) === todayYMD && typeof addTodo === 'function') {
+      const label = `${time ? `${time} ` : ''}${title}`.trim();
+      if (label) addTodo(label);
+    }
   };
 
   return (
@@ -112,7 +132,7 @@ export default function SchedulePage() {
           <span className="muted qa-hint">달력에서 날짜를 클릭해 당일 일정을 관리하세요.</span>
         </div>
 
-        {/* 좌: 달력(더 넓게) / 우: 날짜별 관리 */}
+        {/* 좌: 달력 / 우: 날짜별 관리 */}
         <section className="grid-2 schedule-two-col" style={{ marginTop: 8 }}>
           <aside className="panel" aria-label="월간 달력">
             <h2 className="hl"> </h2>
@@ -135,10 +155,10 @@ export default function SchedulePage() {
               hideIO
             />
 
-            {/* 입력 — 카테고리 옵션 전달 */}
+            {/* 입력 — 카테고리 옵션 전달 / onAdd는 래퍼로 */}
             <EventInput
               selectedDate={selectedDate}
-              onAdd={addEvent}
+              onAdd={handleAddEvent}
               categoryOptions={categories}
             />
 
@@ -150,13 +170,13 @@ export default function SchedulePage() {
               onAddCategory={addCategory}
             />
 
-            {/* 날짜별 버킷: 동일 높이로 정렬됨 */}
+            {/* 날짜별 버킷 */}
             <DayBuckets
               items={todaysEvents}
               category="all"
               onToggleDone={onToggleDone}
-              onRemove={(id)=>removeEvent(id)}
-              onReorder={(from,to)=>reorderEvent(selectedDate, from, to)}
+              onRemove={(id) => removeEvent(id)}
+              onReorder={(from, to) => reorderEvent(selectedDate, from, to)}
               dragSourceRef={dragSourceRef}
               categoryOptions={categories}
             />
