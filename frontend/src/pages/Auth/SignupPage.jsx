@@ -36,7 +36,6 @@ export default function SignupPage() {
 
     try {
       setLoading(true);
-      // 백엔드 API는 기존 그대로 사용 (/api/auth/register)
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -47,7 +46,7 @@ export default function SignupPage() {
         throw new Error(data?.detail || data?.message || '회원가입에 실패했습니다.');
       }
       setOk('회원가입이 완료되었습니다! 이제 로그인 해주세요.');
-      // window.location.assign('/login'); // 자동 이동을 원하면 주석 해제
+      // window.location.assign('/login');
     } catch (e) {
       setErr(e.message);
     } finally {
@@ -64,7 +63,8 @@ export default function SignupPage() {
           <span className="eyebrow">SIGN UP</span>
         </header>
 
-        <section className="mypage-grid board elevate glass" aria-label="회원가입">
+        {/* 80% 폭 */}
+        <section className="auth-section board elevate glass" aria-label="회원가입">
           <article className="panel auth-panel">
             <h2 className="visually-hidden">회원가입 폼</h2>
             <form className="form" onSubmit={submit} noValidate>
@@ -106,16 +106,20 @@ export default function SignupPage() {
               {err && <p className="auth-error" role="alert">{err}</p>}
               {ok && <p className="auth-ok" role="status">{ok}</p>}
 
-              <div className="row-end">
-                <button type="submit" className="btn solid btn--lg" disabled={loading}>
+              {/* 버튼 가로 정렬 */}
+              <div className="auth-btn-row">
+                <button
+                  type="submit"
+                  className="btn solid btn--lg"
+                  disabled={loading}
+                >
                   {loading ? '가입 중…' : '회원가입'}
                 </button>
+                <a href="/login" className="btn outline btn--lg">
+                  로그인
+                </a>
               </div>
             </form>
-
-            <p className="muted small auth-switch">
-              이미 계정이 있나요? <a href="/login">로그인</a>
-            </p>
           </article>
         </section>
       </main>
