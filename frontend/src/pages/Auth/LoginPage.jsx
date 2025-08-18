@@ -44,7 +44,6 @@ export default function LoginPage() {
       }
       const data = await res.json();
       localStorage.setItem('token', data.token ?? data.access_token);
-      // 로그인 성공 후 이동 (필요한 경로로 변경)
       window.location.assign('/mypage');
     } catch (e) {
       setErr(e.message);
@@ -62,9 +61,11 @@ export default function LoginPage() {
           <span className="eyebrow">SIGN IN</span>
         </header>
 
-        <section className="mypage-grid board elevate glass" aria-label="로그인">
+        {/* 80% 폭으로 넓힌 래퍼 */}
+        <section className="auth-section board elevate glass" aria-label="로그인">
           <article className="panel auth-panel">
             <h2 className="visually-hidden">로그인 폼</h2>
+
             <form className="form" onSubmit={submit} noValidate>
               <label>
                 <span>이메일</span>
@@ -75,8 +76,10 @@ export default function LoginPage() {
                   onChange={onChange}
                   placeholder="you@example.com"
                   required
+                  autoComplete="email"
                 />
               </label>
+
               <label>
                 <span>비밀번호</span>
                 <input
@@ -86,20 +89,29 @@ export default function LoginPage() {
                   onChange={onChange}
                   placeholder="••••••••"
                   required
+                  autoComplete="current-password"
                 />
               </label>
 
               {err && <p className="auth-error" role="alert">{err}</p>}
 
-              <div className="row-end">
-                <button type="submit" className="btn solid btn--lg" disabled={loading}>
+              {/* 버튼 가로 정렬 */}
+              <div className="auth-btn-row">
+                <button
+                  type="submit"
+                  className="btn solid btn--lg"
+                  disabled={loading}
+                >
                   {loading ? '로그인 중…' : '로그인'}
                 </button>
+                <a href="/signup" className="btn outline btn--lg">
+                  회원가입
+                </a>
               </div>
             </form>
 
             <p className="muted small auth-switch">
-              아직 계정이 없나요? <a href="/signup">회원가입</a>
+              계정이 없으신가요? <a href="/signup">지금 가입하기</a>
             </p>
           </article>
         </section>
